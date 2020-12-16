@@ -7,12 +7,29 @@
 //
 
 import UIKit
+import SpriteKit
 
 class ViewController: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view.
+
+		// Convert UIview into Skview
+		guard let skView = self.view as? SKView else {
+			return
+		}
+
+		// Indicate FPS on the view
+		skView.showsFPS = true
+
+		// Indicate number of nodes in the view
+		skView.showsNodeCount = true
+
+		// Create scene sized same as the view
+		let scene = SKScene(size: skView.frame.size)
+
+		// Display the scene in the view
+		skView.presentScene(scene)
 	}
 
 
