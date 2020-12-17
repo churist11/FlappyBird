@@ -1,15 +1,15 @@
 //
-//  ViewController.swift
+//  FlappyViewController.swift
 //  FlappyBird
 //
-//  Created by 櫻井将太郎 on 2020/12/17.
+//  Created by 櫻井将太郎 on 2020/12/18.
 //  Copyright © 2020 shoutarou.sakurai. All rights reserved.
 //
 
 import UIKit
 import SpriteKit
 
-class ViewController: UIViewController {
+class FlappyViewController: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -34,4 +34,3 @@ class ViewController: UIViewController {
 
 
 }
-

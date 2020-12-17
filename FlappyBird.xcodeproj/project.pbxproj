@@ -9,23 +9,23 @@
 /* Begin PBXBuildFile section */
 		2F70C0BE258A59CA000ADF8C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F70C0BD258A59CA000ADF8C /* AppDelegate.swift */; };
 		2F70C0C0258A59CA000ADF8C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F70C0BF258A59CA000ADF8C /* SceneDelegate.swift */; };
-		2F70C0C2258A59CA000ADF8C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F70C0C1258A59CA000ADF8C /* ViewController.swift */; };
 		2F70C0C5258A59CA000ADF8C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F70C0C3258A59CA000ADF8C /* Main.storyboard */; };
 		2F70C0C7258A59CD000ADF8C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F70C0C6258A59CD000ADF8C /* Assets.xcassets */; };
 		2F70C0CA258A59CD000ADF8C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F70C0C8258A59CD000ADF8C /* LaunchScreen.storyboard */; };
 		2F70C0D2258BA061000ADF8C /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F70C0D1258BA061000ADF8C /* GameScene.swift */; };
+		2F70C0D4258BACDE000ADF8C /* FlappyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F70C0D3258BACDE000ADF8C /* FlappyViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2F70C0BA258A59CA000ADF8C /* FlappyBird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlappyBird.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F70C0BD258A59CA000ADF8C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2F70C0BF258A59CA000ADF8C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		2F70C0C1258A59CA000ADF8C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		2F70C0C4258A59CA000ADF8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2F70C0C6258A59CD000ADF8C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2F70C0C9258A59CD000ADF8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2F70C0CB258A59CD000ADF8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2F70C0D1258BA061000ADF8C /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		2F70C0D3258BACDE000ADF8C /* FlappyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlappyViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,12 +60,12 @@
 			children = (
 				2F70C0BD258A59CA000ADF8C /* AppDelegate.swift */,
 				2F70C0BF258A59CA000ADF8C /* SceneDelegate.swift */,
-				2F70C0C1258A59CA000ADF8C /* ViewController.swift */,
 				2F70C0C3258A59CA000ADF8C /* Main.storyboard */,
 				2F70C0C6258A59CD000ADF8C /* Assets.xcassets */,
 				2F70C0C8258A59CD000ADF8C /* LaunchScreen.storyboard */,
 				2F70C0CB258A59CD000ADF8C /* Info.plist */,
 				2F70C0D1258BA061000ADF8C /* GameScene.swift */,
+				2F70C0D3258BACDE000ADF8C /* FlappyViewController.swift */,
 			);
 			path = FlappyBird;
 			sourceTree = "<group>";
@@ -141,7 +141,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F70C0C2258A59CA000ADF8C /* ViewController.swift in Sources */,
+				2F70C0D4258BACDE000ADF8C /* FlappyViewController.swift in Sources */,
 				2F70C0BE258A59CA000ADF8C /* AppDelegate.swift in Sources */,
 				2F70C0D2258BA061000ADF8C /* GameScene.swift in Sources */,
 				2F70C0C0258A59CA000ADF8C /* SceneDelegate.swift in Sources */,
