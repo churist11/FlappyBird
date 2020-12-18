@@ -13,7 +13,13 @@ class GameScene: SKScene {
 
 	// Called when this scene is displayed on the view
 	override func didMove(to view: SKView) {
-		super.didMove(to: view)
+		self.setupGround()
+	}
+
+
+	// MARK: - Instance Method
+
+	private func setupGround() -> Void {
 
 		// Set scene's background
 		self.backgroundColor = UIColor(red: 0.15, green: 0.75, blue: 0.90, alpha: 1)
@@ -54,6 +60,12 @@ class GameScene: SKScene {
 			// Place the sprite on scene
 			scrollNode.addChild(groundSprite)
 		}
+
+
+	}
+
+	private func setupCloud() -> Void {
+
 	}
 
 } //End
