@@ -11,22 +11,38 @@ import SpriteKit
 
 class GameScene: SKScene {
 
+
+
+	// MARK: - Stored Property
+
+
+	private var scrollNode: SKNode!
+
+
+	// MARK: - didMove Method
+
+
 	// Called when this scene is displayed on the view
 	override func didMove(to view: SKView) {
-		self.setupGround()
-	}
-
-
-	// MARK: - Instance Method
-
-	private func setupGround() -> Void {
 
 		// Set scene's background
 		self.backgroundColor = UIColor(red: 0.15, green: 0.75, blue: 0.90, alpha: 1)
 
 		// Create parent node of sprite to stop scrolling anytime
-		let scrollNode = SKNode()
+		self.scrollNode = SKNode()
 		self.addChild(scrollNode)
+
+		// Call methods to set up sprites
+		self.setupGround()
+		self.setupCloud()
+	}
+
+
+	// MARK: - Instance Method
+	
+
+	private func setupGround() -> Void {
+
 
 		// Load ground image into texture
 		let groundTexture = SKTexture(imageNamed: "ground")
@@ -42,7 +58,7 @@ class GameScene: SKScene {
 		// Repeat two antions
 		let repeatScrollGround = SKAction.repeatForever(SKAction.sequence([moveGround, resetGround]))
 
-		// Place the ground sprite on scene
+		// Place the ground sprites on scene
 		for i in 0 ..< needNumber {
 
 			// Create sprite using texture
@@ -60,8 +76,6 @@ class GameScene: SKScene {
 			// Place the sprite on scene
 			scrollNode.addChild(groundSprite)
 		}
-
-
 	}
 
 	private func setupCloud() -> Void {
