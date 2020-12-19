@@ -32,5 +32,12 @@ class FlappyViewController: UIViewController {
 		skView.presentScene(scene)
 	}
 
+	// Hide status bar while game scene presented
+	override var prefersStatusBarHidden: Bool {
+		get {
+			return true
+		}
+	}
+
 
 }

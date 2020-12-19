@@ -58,16 +58,32 @@
 		2F70C0BC258A59CA000ADF8C /* FlappyBird */ = {
 			isa = PBXGroup;
 			children = (
+				2F70C0D6258DF8B6000ADF8C /* Controller */,
+				2F70C0D5258DF8A7000ADF8C /* Scene */,
 				2F70C0BD258A59CA000ADF8C /* AppDelegate.swift */,
 				2F70C0BF258A59CA000ADF8C /* SceneDelegate.swift */,
 				2F70C0C3258A59CA000ADF8C /* Main.storyboard */,
 				2F70C0C6258A59CD000ADF8C /* Assets.xcassets */,
 				2F70C0C8258A59CD000ADF8C /* LaunchScreen.storyboard */,
 				2F70C0CB258A59CD000ADF8C /* Info.plist */,
-				2F70C0D1258BA061000ADF8C /* GameScene.swift */,
-				2F70C0D3258BACDE000ADF8C /* FlappyViewController.swift */,
 			);
 			path = FlappyBird;
+			sourceTree = "<group>";
+		};
+		2F70C0D5258DF8A7000ADF8C /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				2F70C0D1258BA061000ADF8C /* GameScene.swift */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		2F70C0D6258DF8B6000ADF8C /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				2F70C0D3258BACDE000ADF8C /* FlappyViewController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
