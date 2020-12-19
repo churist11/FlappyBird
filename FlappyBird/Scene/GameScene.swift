@@ -9,7 +9,7 @@
 import UIKit
 import SpriteKit
 
-final class GameScene: SKScene {
+final class GameScene: SKScene, SKPhysicsContactDelegate {
 
 
 	// MARK: - Stored Property
@@ -24,12 +24,25 @@ final class GameScene: SKScene {
 	// Player bird
 	private var bird: SKSpriteNode!
 
+	// Collision categories
+	private let birdCategory: UInt32 = 1 << 0
+	private let groundCategory: UInt32 = 1 << 1
+	private let wallCategory: UInt32 = 1 << 2
+	private let scoreCategory: UInt32 = 1 << 3 // For slit space between walls
+
+	// Score increase when the bird through the wall slit
+	private var score: Int = 0
+
+
 
 	// MARK: - didMove Method
 
 
 	// Called when this scene is displayed on the view
 	override func didMove(to view: SKView) {
+
+		// Set self as delegate to implement contact
+		self.physicsWorld.contactDelegate = self
 
 		// Set gravity
 		self.physicsWorld.gravity = CGVector(dx: 0, dy: -4)
