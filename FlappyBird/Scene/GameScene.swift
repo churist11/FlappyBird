@@ -84,6 +84,12 @@ final class GameScene: SKScene {
 				y: groundTexture.size().height / 2
 			)
 
+			// Set physic to the ground sprite that same size as texture
+			groundSprite.physicsBody = SKPhysicsBody(rectangleOf: groundTexture.size())
+
+			// Add static physics on the ground not tobe influenced by gravity
+			groundSprite.physicsBody?.isDynamic = false
+
 			// Set the action to sprite
 			groundSprite.run(repeatScrollGround)
 
