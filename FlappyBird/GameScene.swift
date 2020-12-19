@@ -39,10 +39,9 @@ class GameScene: SKScene {
 
 
 	// MARK: - Instance Method
-	
+
 
 	private func setupGround() -> Void {
-
 
 		// Load ground image into texture
 		let groundTexture = SKTexture(imageNamed: "ground")
@@ -80,6 +79,39 @@ class GameScene: SKScene {
 
 	private func setupCloud() -> Void {
 
+		// Load ground image into texture
+		let cloudTexture = SKTexture(imageNamed: "cloud")
+		cloudTexture.filteringMode = .nearest
+
+		// Calculate repeatable scene background
+		let needNumber = Int(self.frame.size.width / cloudTexture.size().width) + 2
+
+		// Create action to be scrolled
+		let moveCloud = SKAction.moveBy(x: -cloudTexture.size().width, y: 0, duration: 20)
+		let resetCloud = SKAction.moveBy(x: cloudTexture.size().width, y: 0, duration: 0)
+
+		// Repeat two antions
+		let repeartScrollCloud = SKAction.repeatForever(SKAction.sequence([moveCloud, resetCloud]))
+
+		// Place the sprite on scene
+		for i in 0 ..< needNumber {
+
+			// Create sprite using texture
+			let cloudSprite = SKSpriteNode(texture: cloudTexture)
+			cloudSprite.zPosition = -100
+
+			// Configure position of the sprite
+			cloudSprite.position = CGPoint(
+				x: cloudTexture.size().width / 2 + cloudTexture.size().width * CGFloat(i),
+				y: self.size.height - cloudTexture.size().height / 2
+			)
+
+			// Set the action to sprite
+			cloudSprite.run(repeartScrollCloud)
+
+			// Place the sprite on scene
+			scrollNode.addChild(cloudSprite)
+		}
 	}
 
 } //End
