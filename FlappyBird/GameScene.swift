@@ -9,14 +9,17 @@
 import UIKit
 import SpriteKit
 
-class GameScene: SKScene {
-
+final class GameScene: SKScene {
 
 
 	// MARK: - Stored Property
 
 
+	// Parent node for sprite : ground, cloud
 	private var scrollNode: SKNode!
+
+	// Parent node for sprite : wall
+	private var wallNode: SKNode!
 
 
 	// MARK: - didMove Method
@@ -28,13 +31,18 @@ class GameScene: SKScene {
 		// Set scene's background
 		self.backgroundColor = UIColor(red: 0.15, green: 0.75, blue: 0.90, alpha: 1)
 
-		// Create parent node of sprite to stop scrolling anytime
+		// Create parent node of scrolling sprites
 		self.scrollNode = SKNode()
-		self.addChild(scrollNode)
+		self.addChild(self.scrollNode)
+
+		// Parent node for wall sprite in scroll node
+		self.wallNode = SKNode()
+		scrollNode.addChild(self.wallNode)
 
 		// Call methods to set up sprites
 		self.setupGround()
 		self.setupCloud()
+		self.setupWalls()
 	}
 
 
@@ -113,5 +121,93 @@ class GameScene: SKScene {
 			scrollNode.addChild(cloudSprite)
 		}
 	}
+
+	private func setupWalls() -> Void {
+
+		// <Setting for texture>
+		// Load image for sprite
+		let wallTexture = SKTexture(imageNamed: "wall")
+
+		// Set texture quality
+		wallTexture.filteringMode = .linear
+
+		//<Setting for wall moving>
+		// 1. Calculate distance wall sprite move
+		let movingDistance = self.frame.size.width + (wallTexture.size().width * 2)
+
+		// 2. Create move action
+		let moveAction = SKAction.moveBy(x: -movingDistance, y: 0, duration: 4)
+
+		// 3. Create action that remove wall from scene
+		let removeAction = SKAction.removeFromParent()
+
+		// 4. Create sequence action
+		let wallAnimation = SKAction.sequence([moveAction, removeAction])
+
+		//<Setting for random slit>
+		// 1. Get bird texture size
+		let birdTextureSize = SKTexture(imageNamed: "bird_a").size()
+
+		// 2. Define slit size the bird throughout
+		let slit_length = birdTextureSize.height * 3
+
+		// 3. Define range of slit
+		let random_y_range = birdTextureSize.height * 3
+
+		// 4. Get center y position for wall
+		let groundSize = SKTexture(imageNamed: "ground").size()
+		let center_y = groundSize.height + (self.frame.size.height - groundSize.height) / 2
+		let under_wall_lowest_y = center_y - slit_length / 2 - wallTexture.size().height / 2 - random_y_range / 2
+
+		// <Define action: creation for wall>
+		let createWallAnimation = SKAction.run {
+
+			// Configure the wall position
+			let wall = SKNode()
+			wall.position = CGPoint(
+				x: self.frame.size.width + wallTexture.size().width / 2,
+				y: 0
+			)
+			wall.zPosition = -50
+
+			// Generate random slit value
+			let random_y = CGFloat.random(in: 0 ..< random_y_range)
+			let under_wall_y = under_wall_lowest_y + random_y
+
+			// Create under wall sprite
+			let underWall = SKSpriteNode(texture: wallTexture)
+			underWall.position = CGPoint(
+				x: 0,
+				y: under_wall_y
+			)
+
+			let upperWall = SKSpriteNode(texture: wallTexture)
+			upperWall.position = CGPoint(
+				x: 0,
+				y: under_wall_y + wallTexture.size().height + slit_length
+			)
+
+			wall.addChild(upperWall)
+			wall.addChild(underWall)
+
+			// Run animation
+			wall.run(wallAnimation)
+
+			// Add child to parent wall node
+			self.wallNode.addChild(wall)
+		}
+
+
+		// <Define action: waiting for next wall creation>
+		let waitAnimation = SKAction.wait(forDuration: 2)
+
+		// Combine action for wait-create animation
+		let repreatAction = SKAction.repeatForever(SKAction.sequence([createWallAnimation, waitAnimation]))
+
+		// Run the action
+		wallNode.run(repreatAction)
+
+	}
+
 
 } //End
