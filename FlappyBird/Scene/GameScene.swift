@@ -53,7 +53,7 @@ final class GameScene: SKScene {
 	}
 
 
-	// MARK: - Instance Method
+	// MARK: - Custom Method
 
 
 	private func setupGround() -> Void {
@@ -265,6 +265,21 @@ final class GameScene: SKScene {
 
 		// Add the bird sprite to parent
 		self.addChild(self.bird)
+
+	}
+
+
+	// MARK: - Overrides
+
+
+	// Called when user started touching screen
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+
+		// Turn the bird's speed zero
+		self.bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+
+		// Give the bird power to go upper
+		self.bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 14))
 
 	}
 
