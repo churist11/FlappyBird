@@ -31,6 +31,9 @@ final class GameScene: SKScene {
 	// Called when this scene is displayed on the view
 	override func didMove(to view: SKView) {
 
+		// Set gravity
+		self.physicsWorld.gravity = CGVector(dx: 0, dy: -4)
+
 		// Set scene's background
 		self.backgroundColor = UIColor(red: 0.15, green: 0.75, blue: 0.90, alpha: 1)
 
@@ -238,6 +241,9 @@ final class GameScene: SKScene {
 			x: self.frame.size.width * 0.2,
 			y: self.frame.size.height * 0.5
 		)
+
+		// Set physics to the bird
+		self.bird.physicsBody = SKPhysicsBody(circleOfRadius: self.bird.size.height / 2)
 
 		// Add the animation to the bird sprite
 		self.bird.run(flap)
