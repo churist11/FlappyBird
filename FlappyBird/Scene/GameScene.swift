@@ -21,6 +21,9 @@ final class GameScene: SKScene {
 	// Parent node for sprite : wall
 	private var wallNode: SKNode!
 
+	// Player bird
+	private var bird: SKSpriteNode!
+
 
 	// MARK: - didMove Method
 
@@ -43,6 +46,7 @@ final class GameScene: SKScene {
 		self.setupGround()
 		self.setupCloud()
 		self.setupWalls()
+		self.setupBird()
 	}
 
 
@@ -206,6 +210,40 @@ final class GameScene: SKScene {
 
 		// Run the action
 		wallNode.run(repreatAction)
+
+	}
+
+	private func setupBird() -> Void {
+
+		// Load 2 bird images
+		let birdTextureA = SKTexture(imageNamed: "bird_a")
+		let birdTextureB = SKTexture(imageNamed: "bird_b")
+
+		// Set texture quality
+		birdTextureA.filteringMode = .linear
+		birdTextureB.filteringMode = .linear
+
+		// Defin action: switching texture, every 0.2sec birdA - B
+		let texturesAnimation = SKAction.animate(with: [birdTextureA
+			,  birdTextureB], timePerFrame: 0.2)
+
+		// Make the action repeatable
+		let flap = SKAction.repeatForever(texturesAnimation)
+
+		// Create sprite for bird
+		self.bird = SKSpriteNode(texture: birdTextureA)
+
+		// Place the bird sprite
+		self.bird.position = CGPoint(
+			x: self.frame.size.width * 0.2,
+			y: self.frame.size.height * 0.5
+		)
+
+		// Add the animation to the bird sprite
+		self.bird.run(flap)
+
+		// Add the bird sprite to parent
+		self.addChild(self.bird)
 
 	}
 
