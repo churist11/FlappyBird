@@ -9,16 +9,16 @@
 import UIKit
 import SpriteKit
 
-final class GameScene: SKScene, SKPhysicsContactDelegate {
+final class GameScene: SKScene {
 
 
 	// MARK: - Stored Property
 
 
-	// Parent node for sprite : ground, cloud
+	// Parent node for all scrolling sprite , child of scene
 	private var scrollNode: SKNode!
 
-	// Parent node for sprite : wall
+	// Parent node for sprite : wall, child of scroll node
 	private var wallNode: SKNode!
 
 	// Player bird
@@ -103,6 +103,9 @@ final class GameScene: SKScene, SKPhysicsContactDelegate {
 			// Add static physics on the ground not tobe influenced by gravity
 			groundSprite.physicsBody?.isDynamic = false
 
+			// Configure physics of ground
+			groundSprite.physicsBody?.categoryBitMask = self.groundCategory
+
 			// Set the action to sprite
 			groundSprite.run(repeatScrollGround)
 
@@ -162,7 +165,7 @@ final class GameScene: SKScene, SKPhysicsContactDelegate {
 		let movingDistance = self.frame.size.width + (wallTexture.size().width * 2)
 
 		// 2. Create move action
-		let moveAction = SKAction.moveBy(x: -movingDistance, y: 0, duration: 4)
+		let moveAction = SKAction.moveBy(x: -movingDistance, y: 0, duration: 5)
 
 		// 3. Create action that remove wall from scene
 		let removeAction = SKAction.removeFromParent()
@@ -221,9 +224,26 @@ final class GameScene: SKScene, SKPhysicsContactDelegate {
 			underWall.physicsBody?.isDynamic = false
 			upperWall.physicsBody?.isDynamic = false
 
+			// Set category
+			underWall.physicsBody?.categoryBitMask = self.wallCategory
+			upperWall.physicsBody?.categoryBitMask = self.wallCategory
+
 			// Set as wall node's child
 			wall.addChild(underWall)
 			wall.addChild(upperWall)
+
+			// Create score node
+			let scoreNode = SKNode()
+
+			// Configure the node
+			scoreNode.position = CGPoint(x: upperWall.size.width + birdTextureSize.width / 2, y: self.frame.size.height / 2)
+			scoreNode.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: upperWall.size.width, height: self.frame.size.height))
+			scoreNode.physicsBody?.isDynamic = false
+			scoreNode.physicsBody?.categoryBitMask = self.scoreCategory
+			scoreNode.physicsBody?.contactTestBitMask = self.birdCategory
+
+			// Add to it as child
+			wall.addChild(scoreNode)
 
 			// Run animation
 			wall.run(wallAnimation)
@@ -273,6 +293,12 @@ final class GameScene: SKScene, SKPhysicsContactDelegate {
 		// Set physics to the bird
 		self.bird.physicsBody = SKPhysicsBody(circleOfRadius: self.bird.size.height / 2)
 
+		// Configure physics of bird
+		self.bird.physicsBody?.allowsRotation = false
+		self.bird.physicsBody?.categoryBitMask = self.birdCategory
+		self.bird.physicsBody?.contactTestBitMask = self.wallCategory | self.groundCategory
+		self.bird.physicsBody?.collisionBitMask = self.wallCategory | self.groundCategory
+
 		// Add the animation to the bird sprite
 		self.bird.run(flap)
 
@@ -298,3 +324,32 @@ final class GameScene: SKScene, SKPhysicsContactDelegate {
 
 
 } //End
+
+extension GameScene: SKPhysicsContactDelegate {
+
+	// Called when two physic bodies contacted
+	func didBegin(_ contact: SKPhysicsContact) {
+
+		// Do nothing when gameover
+		if self.scrollNode.speed <= 0 {
+			return
+		}
+
+		if (contact.bodyA.categoryBitMask & self.scoreCategory) == self.scoreCategory || (contact.bodyB.categoryBitMask & self.scoreCategory) == self.scoreCategory {
+
+			// Did contact with score node
+			print("score up")
+			self.score += 1
+			print("Score: \(self.score)")
+
+		} else {
+
+			// Did contact with wall or ground
+			print("Gameover")
+
+			// Stop scrolling
+			self.scrollNode.speed = 0
+		}
+
+	}
+}
