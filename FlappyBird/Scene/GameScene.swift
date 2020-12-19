@@ -200,8 +200,17 @@ final class GameScene: SKScene {
 				y: under_wall_y + wallTexture.size().height + slit_length
 			)
 
-			wall.addChild(upperWall)
+			// Add physics to individual wall
+			underWall.physicsBody = SKPhysicsBody(rectangleOf: wallTexture.size())
+			upperWall.physicsBody = SKPhysicsBody(rectangleOf: wallTexture.size())
+
+			// Set all wall is static
+			underWall.physicsBody?.isDynamic = false
+			upperWall.physicsBody?.isDynamic = false
+
+			// Set as wall node's child
 			wall.addChild(underWall)
+			wall.addChild(upperWall)
 
 			// Run animation
 			wall.run(wallAnimation)
