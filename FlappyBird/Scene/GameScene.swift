@@ -31,10 +31,14 @@ final class GameScene: SKScene {
 	private let scoreCategory: UInt32 = 1 << 3 // For slit space between walls
 
 	// <Score>
-	// Score increase when the bird through the wall slit
+	/// $ Score increase when the bird through the wall slit
 	private var score: Int = 0
-	// User defaults to store best scrore
+	/// $ User defaults to store best scrore
 	private var userDefaults: UserDefaults = UserDefaults.standard
+	/// $ Label displayed on scene for current score
+	private var scoreLabelNode: SKLabelNode!
+	/// $ Label displayed on scene for Best score
+	private var bestLabelNode: SKLabelNode!
 
 
 	// MARK: - didMove Method
@@ -65,6 +69,9 @@ final class GameScene: SKScene {
 		self.setupCloud()
 		self.setupWalls()
 		self.setupBird()
+
+		// Call Method to display labels
+		self.setupLabels()
 	}
 
 
@@ -309,6 +316,31 @@ final class GameScene: SKScene {
 
 	}
 
+	private func setupLabels() -> Void {
+
+		// Establish Current score label
+		self.score = 0
+		self.scoreLabelNode = SKLabelNode()
+		self.scoreLabelNode.fontColor = .black
+		self.scoreLabelNode.position = CGPoint(x: 10, y: self.frame.size.height - 60)
+		self.scoreLabelNode.zPosition = 100
+		self.scoreLabelNode.horizontalAlignmentMode = .left
+		self.scoreLabelNode.text = "Current score: \(self.score)"
+
+		// Establish Best score label
+		self.bestLabelNode = SKLabelNode()
+		self.bestLabelNode.fontColor = .black
+		self.bestLabelNode.position = CGPoint(x: 10, y: self.frame.size.height - 90)
+		self.bestLabelNode.zPosition = 100
+		self.bestLabelNode.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
+		let bestScore = self.userDefaults.integer(forKey: C.BEST_SCORE_KEY)
+		self.bestLabelNode.text = "Best score: \(bestScore)"
+
+		// Add labels to scene as child
+		self.addChild(self.scoreLabelNode)
+		self.addChild(self.bestLabelNode)
+	}
+
 	private func restart() -> Void {
 
 		// Turn the score 0
@@ -373,6 +405,8 @@ extension GameScene: SKPhysicsContactDelegate {
 			// Did contact with score node, get 1 score
 			self.score += 1
 			print("Score: \(self.score)")
+			// TODO: - UPdate current score label
+			self.scoreLabelNode.text = "Current score: \(self.score)"
 
 			// Get key-IntValue pair to store best score (default value is 0)
 			var bestScore = self.userDefaults.integer(forKey: C.BEST_SCORE_KEY)
@@ -388,6 +422,8 @@ extension GameScene: SKPhysicsContactDelegate {
 
 				// Save immediately
 				self.userDefaults.synchronize()
+				// TODO: - Update best score label
+				self.bestLabelNode.text = "Best score: \(bestScore)"
 
 				// Test
 				print("BEST: \(bestScore)")
