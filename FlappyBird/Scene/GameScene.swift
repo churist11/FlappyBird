@@ -31,14 +31,41 @@ final class GameScene: SKScene {
 	private let scoreCategory: UInt32 = 1 << 3 // For slit space between walls
 
 	// <Score>
-	/// $ Score increase when the bird through the wall slit
-	private var score: Int = 0
+
 	/// $ User defaults to store best scrore
 	private var userDefaults: UserDefaults = UserDefaults.standard
 	/// $ Label displayed on scene for current score
 	private var scoreLabelNode: SKLabelNode!
 	/// $ Label displayed on scene for Best score
 	private var bestLabelNode: SKLabelNode!
+
+
+	// MARK: - Computed Property
+
+
+	/// $ Score increase when the bird through the wall slit
+	private var score: Int = 0 {
+		willSet {
+			print("Score: \(newValue)")
+		}
+	}
+
+	/// $ Best score to be stored into user defaults
+	private var bestScore: Int {
+		get {
+			return self.userDefaults.integer(forKey: C.BEST_SCORE_KEY)
+		}
+		set {
+			// Store value with key into user defaults
+			self.userDefaults.set(newValue, forKey: C.BEST_SCORE_KEY)
+
+			// Save immediately
+			self.userDefaults.synchronize()
+
+			// Log the best score
+			print("BEST: \(newValue)")
+		}
+	}
 
 
 	// MARK: - didMove Method
@@ -333,8 +360,7 @@ final class GameScene: SKScene {
 		self.bestLabelNode.position = CGPoint(x: 10, y: self.frame.size.height - 90)
 		self.bestLabelNode.zPosition = 100
 		self.bestLabelNode.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
-		let bestScore = self.userDefaults.integer(forKey: C.BEST_SCORE_KEY)
-		self.bestLabelNode.text = "Best score: \(bestScore)"
+		self.bestLabelNode.text = "Best score: \(self.bestScore)"
 
 		// Add labels to scene as child
 		self.addChild(self.scoreLabelNode)
@@ -345,6 +371,7 @@ final class GameScene: SKScene {
 
 		// Turn the score 0
 		self.score = 0
+		self.scoreLabelNode.text = "Current score: \(self.score)"
 
 		// Reset the bird to initiial state and position
 		self.bird.position = CGPoint(
@@ -404,29 +431,18 @@ extension GameScene: SKPhysicsContactDelegate {
 
 			// Did contact with score node, get 1 score
 			self.score += 1
-			print("Score: \(self.score)")
-			// TODO: - UPdate current score label
+
+			// Update current score label
 			self.scoreLabelNode.text = "Current score: \(self.score)"
 
-			// Get key-IntValue pair to store best score (default value is 0)
-			var bestScore = self.userDefaults.integer(forKey: C.BEST_SCORE_KEY)
-
 			// Check current score is the best score
-			if bestScore < self.score {
+			if self.bestScore < self.score {
 
 				// Update the best score to current score
-				bestScore = self.score
+				self.bestScore = self.score
 
-				// Store value with key into user defaults
-				self.userDefaults.set(bestScore, forKey: C.BEST_SCORE_KEY)
-
-				// Save immediately
-				self.userDefaults.synchronize()
-				// TODO: - Update best score label
-				self.bestLabelNode.text = "Best score: \(bestScore)"
-
-				// Test
-				print("BEST: \(bestScore)")
+				// Update best score label
+				self.bestLabelNode.text = "Best score: \(self.bestScore)"
 			}
 
 		} else {
