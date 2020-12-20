@@ -30,18 +30,30 @@ final class GameScene: SKScene {
 	private let wallCategory: UInt32 = 1 << 2
 	private let scoreCategory: UInt32 = 1 << 3 // For slit space between walls
 
-	// <Score>
+	// <Score properties>
 
 	/// $ User defaults to store best scrore
 	private var userDefaults: UserDefaults = UserDefaults.standard
+
+	/// $ Label displayed on scene for item score
+	private var itemLabelNode: SKLabelNode!
+
 	/// $ Label displayed on scene for current score
 	private var scoreLabelNode: SKLabelNode!
+
 	/// $ Label displayed on scene for Best score
 	private var bestLabelNode: SKLabelNode!
 
 
 	// MARK: - Computed Property
 
+
+	/// $ Item score increase when the bird get item
+	private var itemScore: Int = 0 {
+		willSet {
+			print("Item: \(newValue)")
+		}
+	}
 
 	/// $ Score increase when the bird through the wall slit
 	private var score: Int = 0 {
@@ -362,9 +374,18 @@ final class GameScene: SKScene {
 		self.bestLabelNode.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
 		self.bestLabelNode.text = "Best score: \(self.bestScore)"
 
+		// Establish item score label
+		self.itemLabelNode = SKLabelNode()
+		self.itemLabelNode.fontColor = .blue
+		self.itemLabelNode.position = CGPoint(x: 10, y: self.frame.size.height - 150)
+		self.itemLabelNode.zPosition = 100
+		self.itemLabelNode.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
+		self.itemLabelNode.text = "Item score: \(self.itemScore)"
+
 		// Add labels to scene as child
 		self.addChild(self.scoreLabelNode)
 		self.addChild(self.bestLabelNode)
+		self.addChild(self.itemLabelNode)
 	}
 
 	private func restart() -> Void {
