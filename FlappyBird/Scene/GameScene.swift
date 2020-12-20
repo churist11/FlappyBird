@@ -287,7 +287,7 @@ final class GameScene: SKScene {
 		// Place the bird sprite
 		self.bird.position = CGPoint(
 			x: self.frame.size.width * 0.2,
-			y: self.frame.size.height * 0.5
+			y: self.frame.size.height * 0.6
 		)
 
 		// Set physics to the bird
@@ -307,6 +307,28 @@ final class GameScene: SKScene {
 
 	}
 
+	private func restart() -> Void {
+
+		// Turn the score 0
+		self.score = 0
+
+		// Reset the bird to initiial state and position
+		self.bird.position = CGPoint(
+			x: self.frame.size.width * 0.2,
+			y: self.frame.size.height * 0.6
+		)
+		self.bird.physicsBody?.velocity = CGVector.zero
+		self.bird.physicsBody?.collisionBitMask = self.wallCategory | self.groundCategory
+		self.bird.zRotation = 0
+
+		// Clear all walls
+		self.wallNode.removeAllChildren()
+
+		// Have stopped sprites restart scrolling
+		self.scrollNode.speed = 1
+		self.bird.speed = 1
+	}
+
 
 	// MARK: - Overrides
 
@@ -314,11 +336,20 @@ final class GameScene: SKScene {
 	// Called when user started touching screen
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 
-		// Turn the bird's speed zero
-		self.bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+		// Flap in only gaming situation
+		if self.scrollNode.speed > 0 {
 
-		// Give the bird power to go upper
-		self.bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 14))
+			// Turn the bird's speed zero
+			self.bird.physicsBody?.velocity = CGVector.zero
+
+			// Give the bird power to go upper
+			self.bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 10))
+
+		} else if self.bird.speed == 0 {
+
+			// Tap to restart the game
+			self.restart()
+		}
 
 	}
 
@@ -357,11 +388,9 @@ extension GameScene: SKPhysicsContactDelegate {
 			let rotate = SKAction.rotate(byAngle: CGFloat(Double.pi) * CGFloat(self.bird.position.y) * 0.01, duration: 1)
 
 			self.bird.run(rotate) {
-				// Stop the bird
+				// Stop the bird's moving
 				self.bird.speed = 0
 			}
-
 		}
-
 	}
 }
