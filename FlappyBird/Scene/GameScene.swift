@@ -30,9 +30,9 @@ final class GameScene: SKScene {
 	private let wallCategory: UInt32 = 1 << 2
 	private let scoreCategory: UInt32 = 1 << 3 // For slit space between walls
 
+	// <Score>
 	// Score increase when the bird through the wall slit
 	private var score: Int = 0
-
 	// User defaults to store best scrore
 	private var userDefaults: UserDefaults = UserDefaults.standard
 
@@ -74,7 +74,7 @@ final class GameScene: SKScene {
 	private func setupGround() -> Void {
 
 		// Load ground image into texture
-		let groundTexture = SKTexture(imageNamed: "ground")
+		let groundTexture = SKTexture(imageNamed: C.IMG_ASSET_GROUND)
 		groundTexture.filteringMode = .nearest
 
 		// Calculate repeatable scene background
@@ -119,7 +119,7 @@ final class GameScene: SKScene {
 	private func setupCloud() -> Void {
 
 		// Load ground image into texture
-		let cloudTexture = SKTexture(imageNamed: "cloud")
+		let cloudTexture = SKTexture(imageNamed: C.IMG_ASSET_CLOUD)
 		cloudTexture.filteringMode = .nearest
 
 		// Calculate repeatable scene background
@@ -157,7 +157,7 @@ final class GameScene: SKScene {
 
 		// <Setting for texture>
 		// Load image for sprite
-		let wallTexture = SKTexture(imageNamed: "wall")
+		let wallTexture = SKTexture(imageNamed: C.IMG_ASSET_WALL)
 
 		// Set texture quality
 		wallTexture.filteringMode = .linear
@@ -177,7 +177,7 @@ final class GameScene: SKScene {
 
 		//<Setting for random slit>
 		// 1. Get bird texture size
-		let birdTextureSize = SKTexture(imageNamed: "bird_a").size()
+		let birdTextureSize = SKTexture(imageNamed: C.IMG_ASSET_BIRD_A).size()
 
 		// 2. Define slit size the bird throughout
 		let slit_length = birdTextureSize.height * 3
@@ -186,7 +186,7 @@ final class GameScene: SKScene {
 		let random_y_range = birdTextureSize.height * 3
 
 		// 4. Get center y position for wall
-		let groundSize = SKTexture(imageNamed: "ground").size()
+		let groundSize = SKTexture(imageNamed: C.IMG_ASSET_GROUND).size()
 		let center_y = groundSize.height + (self.frame.size.height - groundSize.height) / 2
 		let under_wall_lowest_y = center_y - slit_length / 2 - wallTexture.size().height / 2 - random_y_range / 2
 
@@ -269,8 +269,8 @@ final class GameScene: SKScene {
 	private func setupBird() -> Void {
 
 		// Load 2 bird images
-		let birdTextureA = SKTexture(imageNamed: "bird_a")
-		let birdTextureB = SKTexture(imageNamed: "bird_b")
+		let birdTextureA = SKTexture(imageNamed: C.IMG_ASSET_BIRD_A)
+		let birdTextureB = SKTexture(imageNamed: C.IMG_ASSET_BIRD_B)
 
 		// Set texture quality
 		birdTextureA.filteringMode = .linear
@@ -375,7 +375,7 @@ extension GameScene: SKPhysicsContactDelegate {
 			print("Score: \(self.score)")
 
 			// Get key-IntValue pair to store best score (default value is 0)
-			var bestScore = self.userDefaults.integer(forKey: "BEST")
+			var bestScore = self.userDefaults.integer(forKey: C.BEST_SCORE_KEY)
 
 			// Check current score is the best score
 			if bestScore < self.score {
@@ -384,7 +384,7 @@ extension GameScene: SKPhysicsContactDelegate {
 				bestScore = self.score
 
 				// Store value with key into user defaults
-				self.userDefaults.set(bestScore, forKey: "BEST")
+				self.userDefaults.set(bestScore, forKey: C.BEST_SCORE_KEY)
 
 				// Save immediately
 				self.userDefaults.synchronize()

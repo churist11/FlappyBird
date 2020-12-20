@@ -14,6 +14,7 @@
 		2F70C0CA258A59CD000ADF8C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F70C0C8258A59CD000ADF8C /* LaunchScreen.storyboard */; };
 		2F70C0D2258BA061000ADF8C /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F70C0D1258BA061000ADF8C /* GameScene.swift */; };
 		2F70C0D4258BACDE000ADF8C /* FlappyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F70C0D3258BACDE000ADF8C /* FlappyViewController.swift */; };
+		2FE49DAC258F6CA300299E02 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE49DAB258F6CA300299E02 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		2F70C0CB258A59CD000ADF8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2F70C0D1258BA061000ADF8C /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		2F70C0D3258BACDE000ADF8C /* FlappyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlappyViewController.swift; sourceTree = "<group>"; };
+		2FE49DAB258F6CA300299E02 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 		2F70C0BC258A59CA000ADF8C /* FlappyBird */ = {
 			isa = PBXGroup;
 			children = (
+				2FE49DAA258F6C8100299E02 /* Support */,
 				2F70C0D6258DF8B6000ADF8C /* Controller */,
 				2F70C0D5258DF8A7000ADF8C /* Scene */,
 				2F70C0BD258A59CA000ADF8C /* AppDelegate.swift */,
@@ -84,6 +87,14 @@
 				2F70C0D3258BACDE000ADF8C /* FlappyViewController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		2FE49DAA258F6C8100299E02 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				2FE49DAB258F6CA300299E02 /* Constants.swift */,
+			);
+			path = Support;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -157,6 +168,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FE49DAC258F6CA300299E02 /* Constants.swift in Sources */,
 				2F70C0D4258BACDE000ADF8C /* FlappyViewController.swift in Sources */,
 				2F70C0BE258A59CA000ADF8C /* AppDelegate.swift in Sources */,
 				2F70C0D2258BA061000ADF8C /* GameScene.swift in Sources */,
