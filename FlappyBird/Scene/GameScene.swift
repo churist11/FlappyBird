@@ -349,6 +349,18 @@ extension GameScene: SKPhysicsContactDelegate {
 
 			// Stop scrolling
 			self.scrollNode.speed = 0
+
+			// Modify collision only between the bird and ground to not bounce on wall
+			self.bird.physicsBody?.collisionBitMask = self.groundCategory
+
+			// Rotate lose bird and turn speed 0
+			let rotate = SKAction.rotate(byAngle: CGFloat(Double.pi) * CGFloat(self.bird.position.y) * 0.01, duration: 1)
+
+			self.bird.run(rotate) {
+				// Stop the bird
+				self.bird.speed = 0
+			}
+
 		}
 
 	}
