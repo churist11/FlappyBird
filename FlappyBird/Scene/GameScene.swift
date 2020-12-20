@@ -33,6 +33,8 @@ final class GameScene: SKScene {
 	// Score increase when the bird through the wall slit
 	private var score: Int = 0
 
+	// User defaults to store best scrore
+	private var userDefaults: UserDefaults = UserDefaults.standard
 
 
 	// MARK: - didMove Method
@@ -368,10 +370,28 @@ extension GameScene: SKPhysicsContactDelegate {
 
 		if (contact.bodyA.categoryBitMask & self.scoreCategory) == self.scoreCategory || (contact.bodyB.categoryBitMask & self.scoreCategory) == self.scoreCategory {
 
-			// Did contact with score node
-			print("score up")
+			// Did contact with score node, get 1 score
 			self.score += 1
 			print("Score: \(self.score)")
+
+			// Get key-IntValue pair to store best score (default value is 0)
+			var bestScore = self.userDefaults.integer(forKey: "BEST")
+
+			// Check current score is the best score
+			if bestScore < self.score {
+
+				// Update the best score to current score
+				bestScore = self.score
+
+				// Store value with key into user defaults
+				self.userDefaults.set(bestScore, forKey: "BEST")
+
+				// Save immediately
+				self.userDefaults.synchronize()
+
+				// Test
+				print("BEST: \(bestScore)")
+			}
 
 		} else {
 
