@@ -108,6 +108,7 @@ final class GameScene: SKScene {
 		self.setupCloud()
 		self.setupWalls()
 		self.setupBird()
+		self.setupItems()
 
 		// Call Method to display labels
 		self.setupLabels()
@@ -116,6 +117,8 @@ final class GameScene: SKScene {
 
 	// MARK: - Custom Method
 
+
+	// MARK: - Setup Methods
 
 	private func setupGround() -> Void {
 
@@ -302,7 +305,7 @@ final class GameScene: SKScene {
 
 
 		// <Define action: waiting for next wall creation>
-		let waitAnimation = SKAction.wait(forDuration: 2)
+		let waitAnimation = SKAction.wait(forDuration: 3)
 
 		// Combine action for wait-create animation
 		let repreatAction = SKAction.repeatForever(SKAction.sequence([createWallAnimation, waitAnimation]))
@@ -355,6 +358,10 @@ final class GameScene: SKScene {
 
 	}
 
+	private func setupItems() -> Void {
+		// TODO: - setup item sprite nodes
+	}
+
 	private func setupLabels() -> Void {
 
 		// Establish Current score label
@@ -387,6 +394,8 @@ final class GameScene: SKScene {
 		self.addChild(self.bestLabelNode)
 		self.addChild(self.itemLabelNode)
 	}
+
+	// MARK: - Game cycle method
 
 	private func restart() -> Void {
 
