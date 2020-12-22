@@ -24,6 +24,9 @@ final class GameScene: SKScene {
 	// Player bird
 	private var bird: SKSpriteNode!
 
+	// Parent node for item
+	private var itemParentNode: SKNode!
+
 	// Collision categories
 	private let birdCategory: UInt32 = 1 << 0
 	private let groundCategory: UInt32 = 1 << 1
@@ -101,7 +104,11 @@ final class GameScene: SKScene {
 
 		// Parent node for wall sprite in scroll node
 		self.wallNode = SKNode()
-		scrollNode.addChild(self.wallNode)
+		self.scrollNode.addChild(self.wallNode)
+
+		// Initialize item node container
+		self.itemParentNode = SKNode()
+		self.scrollNode.addChild(self.itemParentNode)
 
 		// Call methods to set up sprites
 		self.setupGround()
@@ -213,7 +220,7 @@ final class GameScene: SKScene {
 
 		//<Setting for wall moving>
 		// 1. Calculate distance wall sprite move
-		let movingDistance = self.frame.size.width + (wallTexture.size().width * 2)
+		let movingDistance = self.frame.size.width + (wallTexture.size().width)
 
 		// 2. Create move action
 		let moveAction = SKAction.moveBy(x: -movingDistance, y: 0, duration: 5)
@@ -311,7 +318,7 @@ final class GameScene: SKScene {
 		let repreatAction = SKAction.repeatForever(SKAction.sequence([createWallAnimation, waitAnimation]))
 
 		// Run the action
-		wallNode.run(repreatAction)
+		self.wallNode.run(repreatAction)
 
 	}
 
@@ -359,7 +366,120 @@ final class GameScene: SKScene {
 	}
 
 	private func setupItems() -> Void {
-		// TODO: - setup item sprite nodes
+
+		// <Setting for texture>
+		// Load image for sprite
+		let itemTexture = SKTexture(imageNamed: C.IMG_ASSET_ITEM)
+
+		// Set texture quality
+		itemTexture.filteringMode = .linear
+
+		//<Setting for item moving>
+		// 1. Calculate distance item sprite move
+		let movingDistance = self.frame.size.width + (itemTexture.size().width)
+
+		// 2. Create move action
+		let moveAction = SKAction.moveBy(x: -movingDistance, y: 0, duration: 5)
+
+		// 3. Create action that remove item from scene
+		let removeAction = SKAction.removeFromParent()
+
+		// 4. Create sequence action
+		let itemAnimation = SKAction.sequence([moveAction, removeAction])
+
+		//<Setting for random slit>
+		// 1. Get bird texture size
+		let birdTextureSize = SKTexture(imageNamed: C.IMG_ASSET_BIRD_A).size()
+
+		// 2. Define slit size the bird throughout
+		let slit_length = birdTextureSize.height * 3
+
+		// 3. Define range of slit
+		let random_y_range = birdTextureSize.height * 5
+
+		// 4. Get center y position for wall
+		let groundSize = SKTexture(imageNamed: C.IMG_ASSET_GROUND).size()
+		let center_y = groundSize.height + (self.frame.size.height - groundSize.height) / 2
+		let under_wall_lowest_y = center_y - slit_length / 2 - itemTexture.size().height / 2 - random_y_range / 2
+
+		// <Define action: creation for item>
+		let createItemAnimation = SKAction.run {
+
+			// Configure the item container position
+			let itemContainer = SKNode()
+			itemContainer.position = CGPoint(
+				x: self.frame.size.width + itemTexture.size().width / 2,
+				y: 0
+			)
+			itemContainer.zPosition = -50
+
+			// Generate random slit value
+			let random_y = CGFloat.random(in: 0 ..< random_y_range)
+			let under_wall_y = under_wall_lowest_y + random_y
+
+//			// Create under wall sprite
+//			let underWall = SKSpriteNode(texture: itemTexture)
+//			underWall.position = CGPoint(
+//				x: 0,
+//				y: under_wall_y
+//			)
+//
+//			let upperWall = SKSpriteNode(texture: itemTexture)
+//			upperWall.position = CGPoint(
+//				x: 0,
+//				y: under_wall_y + itemTexture.size().height + slit_length
+//			)
+
+			// Create item sprite
+			let item = SKSpriteNode(texture: itemTexture)
+			item.position = CGPoint(
+				x: 0,
+				y: (under_wall_y + (under_wall_y + itemTexture.size().height + slit_length)) / 2
+			)
+
+
+//			// Add physics to individual wall
+//			underWall.physicsBody = SKPhysicsBody(rectangleOf: itemTexture.size())
+//			upperWall.physicsBody = SKPhysicsBody(rectangleOf: itemTexture.size())
+
+//			// Set all wall is static
+//			underWall.physicsBody?.isDynamic = false
+//			upperWall.physicsBody?.isDynamic = false
+
+//			// Set category
+//			underWall.physicsBody?.categoryBitMask = self.wallCategory
+//			upperWall.physicsBody?.categoryBitMask = self.wallCategory
+
+			// Set as wall node's child
+//			wall.addChild(underWall)
+//			wall.addChild(upperWall)
+			itemContainer.addChild(item)
+
+			// Run animation
+			itemContainer.run(itemAnimation)
+
+			// Add child to parent item node
+			self.itemParentNode.addChild(itemContainer)
+		}
+
+
+		// Define action: waiting for next item creation
+		let waitAnimation = SKAction.wait(forDuration: 3)
+
+		// Combine action for wait-create animation
+		let repreatAction = SKAction.repeatForever(SKAction.sequence([createItemAnimation, waitAnimation]))
+
+		// Delay action by 1.5 sec timer
+		Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { (timer) in
+
+			// Run the action
+			self.itemParentNode.run(repreatAction)
+
+			// Remove runnig timer
+			timer.invalidate()
+		}
+
+		
 	}
 
 	private func setupLabels() -> Void {

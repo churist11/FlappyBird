@@ -14,6 +14,7 @@ struct C {
 	static let IMG_ASSET_WALL: String = "wall"
 	static let IMG_ASSET_BIRD_A: String = "bird_a"
 	static let IMG_ASSET_BIRD_B: String = "bird_b"
+	static let IMG_ASSET_ITEM: String = "item"
 
 	static let BEST_SCORE_KEY: String = "BEST"
 
