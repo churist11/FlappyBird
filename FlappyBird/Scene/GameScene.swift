@@ -32,6 +32,7 @@ final class GameScene: SKScene {
 	private let groundCategory: UInt32 = 1 << 1
 	private let wallCategory: UInt32 = 1 << 2
 	private let scoreCategory: UInt32 = 1 << 3 // For slit space between walls
+	private let itemCategory: UInt32 = 1 << 4
 
 	// <Score properties>
 
@@ -425,21 +426,19 @@ final class GameScene: SKScene {
 			)
 
 
-//			// Add physics to individual wall
-//			underWall.physicsBody = SKPhysicsBody(rectangleOf: itemTexture.size())
-//			upperWall.physicsBody = SKPhysicsBody(rectangleOf: itemTexture.size())
+			// Add physics to individual item
+			item.physicsBody = SKPhysicsBody(rectangleOf: itemTexture.size())
 
-//			// Set all wall is static
-//			underWall.physicsBody?.isDynamic = false
-//			upperWall.physicsBody?.isDynamic = false
+			// Set all item is static
+			item.physicsBody?.isDynamic = false
 
-//			// Set category
-//			underWall.physicsBody?.categoryBitMask = self.wallCategory
-//			upperWall.physicsBody?.categoryBitMask = self.wallCategory
+			// Set category
+			item.physicsBody?.categoryBitMask = self.itemCategory
+
+			// And contact
+			item.physicsBody?.contactTestBitMask = self.birdCategory
 
 			// Set as wall node's child
-//			wall.addChild(underWall)
-//			wall.addChild(upperWall)
 			itemContainer.addChild(item)
 
 			// Run animation
@@ -565,6 +564,7 @@ extension GameScene: SKPhysicsContactDelegate {
 			return
 		}
 
+		// Contact with score node
 		if (contact.bodyA.categoryBitMask & self.scoreCategory) == self.scoreCategory || (contact.bodyB.categoryBitMask & self.scoreCategory) == self.scoreCategory {
 
 			// Did contact with score node, get 1 score
@@ -583,9 +583,31 @@ extension GameScene: SKPhysicsContactDelegate {
 				self.bestLabelNode.text = "Best score: \(self.bestScore)"
 			}
 
-		} else {
+			// When contact with item
+		} else if (contact.bodyA.categoryBitMask & self.itemCategory) == self.itemCategory || (contact.bodyB.categoryBitMask & self.itemCategory) == self.itemCategory {
+			// FIXME: - 
+			print(contact.bodyA.categoryBitMask, contact.bodyB.categoryBitMask)
+
+//			// Clarify which body is item
+//			if contact.bodyA.categoryBitMask == self.itemCategory {
+//
+//				// Get node related to the body
+//				if let itemNode = contact.bodyA.node {
+//					print(itemNode)
+//				}
+//			} else {
+//
+//				// Get node related to the body
+//				if let itemNode = contact.bodyB.node {
+//					print(itemNode)
+//				}
+//
+//			}
 
 			// Did contact with wall or ground
+		} else {
+
+			// Log message
 			print("Gameover")
 
 			// Stop scrolling
