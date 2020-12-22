@@ -417,19 +417,6 @@ final class GameScene: SKScene {
 			let random_y = CGFloat.random(in: 0 ..< random_y_range)
 			let under_wall_y = under_wall_lowest_y + random_y
 
-//			// Create under wall sprite
-//			let underWall = SKSpriteNode(texture: itemTexture)
-//			underWall.position = CGPoint(
-//				x: 0,
-//				y: under_wall_y
-//			)
-//
-//			let upperWall = SKSpriteNode(texture: itemTexture)
-//			upperWall.position = CGPoint(
-//				x: 0,
-//				y: under_wall_y + itemTexture.size().height + slit_length
-//			)
-
 			// Create item sprite
 			let item = SKSpriteNode(texture: itemTexture)
 			item.position = CGPoint(
@@ -534,6 +521,7 @@ final class GameScene: SKScene {
 
 		// Clear all walls
 		self.wallNode.removeAllChildren()
+		self.itemParentNode.removeAllChildren()
 
 		// Have stopped sprites restart scrolling
 		self.scrollNode.speed = 1
