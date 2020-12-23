@@ -427,7 +427,7 @@ final class GameScene: SKScene {
 
 
 			// Add physics to individual item
-			item.physicsBody = SKPhysicsBody(rectangleOf: itemTexture.size())
+			item.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: itemTexture.size().width * 0.7, height: itemTexture.size().height * 0.7))
 
 			// Set all item is static
 			item.physicsBody?.isDynamic = false
