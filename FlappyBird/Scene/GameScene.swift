@@ -509,6 +509,11 @@ final class GameScene: SKScene {
 		self.score = 0
 		self.scoreLabelNode.text = "Current score: \(self.score)"
 
+		// Also item scorr
+		self.itemScore = 0
+		self.itemLabelNode.text = "Item score: \(self.itemScore)"
+
+
 		// Reset the bird to initiial state and position
 		self.bird.position = CGPoint(
 			x: self.frame.size.width * 0.2,
@@ -594,6 +599,12 @@ extension GameScene: SKPhysicsContactDelegate {
 
 				// Remove contacted item
 				itemNode.removeFromParent()
+
+				// Did contact with score node, get 1 score
+				self.itemScore += 1
+
+				// Update current score label
+				self.itemLabelNode.text = "Item score: \(self.itemScore)"
 			}
 
 			// Did contact with wall or ground
