@@ -585,24 +585,16 @@ extension GameScene: SKPhysicsContactDelegate {
 
 			// When contact with item
 		} else if (contact.bodyA.categoryBitMask & self.itemCategory) == self.itemCategory || (contact.bodyB.categoryBitMask & self.itemCategory) == self.itemCategory {
-			// FIXME: - 
-			print(contact.bodyA.categoryBitMask, contact.bodyB.categoryBitMask)
 
-//			// Clarify which body is item
-//			if contact.bodyA.categoryBitMask == self.itemCategory {
-//
-//				// Get node related to the body
-//				if let itemNode = contact.bodyA.node {
-//					print(itemNode)
-//				}
-//			} else {
-//
-//				// Get node related to the body
-//				if let itemNode = contact.bodyB.node {
-//					print(itemNode)
-//				}
-//
-//			}
+			// Get item node related to the body
+			if let itemNode = contact.bodyA.node {
+
+				// print log
+				print(itemNode)
+
+				// Remove contacted item
+				itemNode.removeFromParent()
+			}
 
 			// Did contact with wall or ground
 		} else {
