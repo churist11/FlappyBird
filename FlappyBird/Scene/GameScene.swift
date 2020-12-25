@@ -626,7 +626,7 @@ extension GameScene: SKPhysicsContactDelegate {
 		} else if (contact.bodyA.categoryBitMask & self.itemCategory) == self.itemCategory || (contact.bodyB.categoryBitMask & self.itemCategory) == self.itemCategory {
 
 			// Get item node related to the body
-			if let itemNode = contact.bodyA.node {
+			if let itemNode: SKNode = (contact.bodyA.categoryBitMask == self.itemCategory) ? contact.bodyA.node : contact.bodyB.node {
 
 				// print log
 				print(itemNode)
@@ -641,7 +641,7 @@ extension GameScene: SKPhysicsContactDelegate {
 				self.itemScore += 1
 
 				// Update current score label
-				self.itemLabelNode.text = "Item score: \(self.itemScore)"
+				self.itemLabelNode.text = "Item score: \(self.itemScore * 1000)"
 			}
 
 			// <<Did contact with wall or ground>>
