@@ -8,12 +8,16 @@
 
 import UIKit
 import SpriteKit
+import AVFoundation
 
 final class GameScene: SKScene {
 
 
 	// MARK: - Stored Property
 
+
+	/// Sound Player for any situation
+	private var player:AVAudioPlayer!
 
 	// Parent node for all scrolling sprite , child of scene
 	private var scrollNode: SKNode!
@@ -588,7 +592,7 @@ extension GameScene: SKPhysicsContactDelegate {
 				self.bestLabelNode.text = "Best score: \(self.bestScore)"
 			}
 
-			// When contact with item
+			// <<Did contact with item>>
 		} else if (contact.bodyA.categoryBitMask & self.itemCategory) == self.itemCategory || (contact.bodyB.categoryBitMask & self.itemCategory) == self.itemCategory {
 
 			// Get item node related to the body
@@ -596,6 +600,21 @@ extension GameScene: SKPhysicsContactDelegate {
 
 				// print log
 				print(itemNode)
+
+				// <Play sound triggerd by contact>
+				// 1. Create url to get reference to soundfile
+				let url = Bundle.main.bundleURL.appendingPathComponent(C.SOUND_GET_ITEM)
+
+				do {
+					// 2. Set av player intialized from url
+					try self.player = AVAudioPlayer(contentsOf: url)
+
+					// 3. Play sound
+					self.player.play()
+
+				} catch {
+					print(error)
+				}
 
 				// Remove contacted item
 				itemNode.removeFromParent()
@@ -607,7 +626,7 @@ extension GameScene: SKPhysicsContactDelegate {
 				self.itemLabelNode.text = "Item score: \(self.itemScore)"
 			}
 
-			// Did contact with wall or ground
+			// <<Did contact with wall or ground>>
 		} else {
 
 			// Log message
@@ -618,6 +637,21 @@ extension GameScene: SKPhysicsContactDelegate {
 
 			// Modify collision only between the bird and ground to not bounce on wall
 			self.bird.physicsBody?.collisionBitMask = self.groundCategory
+
+			// <Play sound triggerd by contact>
+			// 1. Create url to get reference to soundfile
+			let url = Bundle.main.bundleURL.appendingPathComponent(C.SOUND_GAMEOVER)
+
+			do {
+				// 2. Set av player intialized from url
+				try self.player = AVAudioPlayer(contentsOf: url)
+
+				// 3. Play sound
+				self.player.play()
+
+			} catch {
+				print(error)
+			}
 
 			// Rotate lose bird and turn speed 0
 			let rotate = SKAction.rotate(byAngle: CGFloat(Double.pi) * CGFloat(self.bird.position.y) * 0.01, duration: 1)
