@@ -16,9 +16,6 @@ final class GameScene: SKScene {
 	// MARK: - Stored Property
 
 
-	/// Sound Player for any situation
-	private var player:AVAudioPlayer!
-
 	// Parent node for all scrolling sprite , child of scene
 	private var scrollNode: SKNode!
 
@@ -38,7 +35,15 @@ final class GameScene: SKScene {
 	private let scoreCategory: UInt32 = 1 << 3 // For slit space between walls
 	private let itemCategory: UInt32 = 1 << 4
 
-	// <Score properties>
+	// MARK: - Sound
+
+	/// Sound Player for item get  situation
+	private var player: AVAudioPlayer!
+
+	/// Action to play sound
+	private var soundAction: SKAction!
+
+	// MARK: - Score
 
 	/// $ User defaults to store best scrore
 	private var userDefaults: UserDefaults = UserDefaults.standard
@@ -94,6 +99,12 @@ final class GameScene: SKScene {
 	// Called when this scene is displayed on the view
 	override func didMove(to view: SKView) {
 
+		// Prepare player as same time as scene appeard
+		self.prepareSound(named: C.SOUND_GET_ITEM)
+
+		// Initialize sound action
+		self.soundAction = SKAction.playSoundFileNamed(C.SOUND_GAMEOVER, waitForCompletion: false)
+
 		// Set self as delegate to implement contact
 		self.physicsWorld.contactDelegate = self
 
@@ -131,6 +142,25 @@ final class GameScene: SKScene {
 
 
 	// MARK: - Setup Methods
+
+	private func prepareSound(named soundFileName: String) -> Void {
+
+		// <Prepare sound player will be triggerd by contact>
+		// 1. Create url to get reference to soundfile
+		let url = Bundle.main.bundleURL.appendingPathComponent(soundFileName)
+
+		do {
+			// 2. Assign Intialized player from designated url
+			self.player = try AVAudioPlayer(contentsOf: url)
+
+			// 3. Make player prepared status
+			self.player.prepareToPlay()
+
+		} catch {
+			print(error)
+		}
+
+	}
 
 	private func setupGround() -> Void {
 
@@ -601,20 +631,8 @@ extension GameScene: SKPhysicsContactDelegate {
 				// print log
 				print(itemNode)
 
-				// <Play sound triggerd by contact>
-				// 1. Create url to get reference to soundfile
-				let url = Bundle.main.bundleURL.appendingPathComponent(C.SOUND_GET_ITEM)
-
-				do {
-					// 2. Set av player intialized from url
-					try self.player = AVAudioPlayer(contentsOf: url)
-
-					// 3. Play sound
-					self.player.play()
-
-				} catch {
-					print(error)
-				}
+				// Perform sound
+				self.player.play()
 
 				// Remove contacted item
 				itemNode.removeFromParent()
@@ -638,20 +656,8 @@ extension GameScene: SKPhysicsContactDelegate {
 			// Modify collision only between the bird and ground to not bounce on wall
 			self.bird.physicsBody?.collisionBitMask = self.groundCategory
 
-			// <Play sound triggerd by contact>
-			// 1. Create url to get reference to soundfile
-			let url = Bundle.main.bundleURL.appendingPathComponent(C.SOUND_GAMEOVER)
-
-			do {
-				// 2. Set av player intialized from url
-				try self.player = AVAudioPlayer(contentsOf: url)
-
-				// 3. Play sound
-				self.player.play()
-
-			} catch {
-				print(error)
-			}
+			// Perform GAMEOVER sound
+			self.run(self.soundAction)
 
 			// Rotate lose bird and turn speed 0
 			let rotate = SKAction.rotate(byAngle: CGFloat(Double.pi) * CGFloat(self.bird.position.y) * 0.01, duration: 1)
